@@ -20,6 +20,15 @@ executable {{name}}
   default-language:    Haskell2010
   build-depends:       base >= 4.7 && < 5
 
+test-suite test
+  type:                exitcode-stdio-1.0
+  hs-source-dirs:      test
+  main-is:             Spec.hs
+  default-language:    Haskell2010
+  ghc-options:         -Wall -fwarn-tabs -fno-warn-orphans
+  build-depends:       base >= 4.7 && < 5
+                     , hspec
+
 {-# START_FILE Setup.hs #-}
 import Distribution.Simple
 main = defaultMain
@@ -33,6 +42,22 @@ module Main where
 main :: IO ()
 main = do
   putStrLn "hello world"
+
+
+{-# START_FILE test/MainSpec.hs #-}
+module MainSpec (spec) where
+
+import Test.Hspec
+
+spec :: Spec
+spec = do
+  describe "Main" $ do
+    it "Just run" $ do
+      True `shouldBe` True
+
+{-# START_FILE test/Spec.hs #-}
+{-# OPTIONS_GHC -F -pgmF hspec-discover #-}
+-- for more information check http://hspec.github.io/hspec-discover.html
 
 {-# START_FILE LICENSE #-}
 Copyright {{author-name}}{{^author-name}}Author name here{{/author-name}} (c) {{year}}{{^year}}2019{{/year}}
