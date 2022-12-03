@@ -36,6 +36,25 @@ main = defaultMain
 {-# START_FILE README.md #-}
 # {{name}}
 
+{-# START_FILE Makefile #-}
+.PHONY: test coverage clean build
+
+clean:
+	stack clean
+build:
+	stack build
+run:
+	stack run
+test:
+	stack test --force-dirty
+# make test.seed seed=2107457521
+test.seed:
+	stack test --force-dirty --test-arguments --seed=$(seed)
+coverage:
+	stack test --force-dirty --coverage
+ci: coverage
+	stack hpc report --all 2>&1 | stack exec hpc-threshold
+
 {-# START_FILE src/Main.hs #-}
 module Main where
 
